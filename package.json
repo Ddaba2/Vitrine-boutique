@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node -e \"require('child_process').execSync('npx vite build', {stdio: 'inherit'})\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
