@@ -10,8 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "postinstall": "chmod +x node_modules/.bin/*"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.0",
