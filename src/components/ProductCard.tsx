@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { MessageCircle, Phone } from 'lucide-react'
-import type { Product } from '../lib/supabase'
+import { resolveLocalProductImagePath } from '../lib/productImages'
+import { resolveProductImageUrl, type Product } from '../lib/supabase'
 
 const WHATSAPP_NUMBER = '22300000000'
 
@@ -19,12 +20,15 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
+  const imageSrc =
+    resolveLocalProductImagePath(product) || resolveProductImageUrl(product.image_url)
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
       <Link to={`/produit/${product.id}`} className="block aspect-[4/3] overflow-hidden bg-slate-100">
-        {product.image_url ? (
+        {imageSrc ? (
           <img
-            src={product.image_url}
+            src={imageSrc}
             alt={product.name}
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             loading="lazy"

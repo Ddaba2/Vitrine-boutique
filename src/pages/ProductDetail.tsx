@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { MessageCircle, Phone, ArrowLeft, Tag, CheckCircle, XCircle } from 'lucide-react'
-import { supabase, type Product } from '../lib/supabase'
+import { productHasLocalImage, resolveLocalProductImagePath } from '../lib/productImages'
+import { resolveProductImageUrl, supabase, type Product } from '../lib/supabase'
 
 const WHATSAPP_NUMBER = '22300000000'
 
@@ -23,8 +24,11 @@ export default function ProductDetail() {
       .eq('id', id)
       .maybeSingle()
       .then(({ data }) => {
-        if (!data) setNotFound(true)
-        else setProduct(data)
+        if (!data || !productHasLocalImage(data)) setNotFound(true)
+        else {
+          const localPath = resolveLocalProductImagePath(data)
+          setProduct(localPath ? { ...data, image_url: localPath } : data)
+        }
         setLoading(false)
       })
   }, [id])
@@ -62,6 +66,8 @@ export default function ProductDetail() {
   const whatsappMsg = encodeURIComponent(
     `Bonjour, je suis intéressé(e) par : ${product.name} (${formatPrice(product.price)}). Est-il disponible ?`
   )
+  const imageSrc =
+    resolveLocalProductImagePath(product) || resolveProductImageUrl(product.image_url)
 
   return (
     <div className="flex-1 bg-white">
@@ -86,9 +92,9 @@ export default function ProductDetail() {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           <div>
             <div className="aspect-square rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
-              {product.image_url ? (
+              {imageSrc ? (
                 <img
-                  src={product.image_url}
+                  src={imageSrc}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />

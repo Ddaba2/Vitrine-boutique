@@ -7,7 +7,10 @@
     "node": "20.x"
   },
   "scripts": {
+    "sync:products": "node scripts/generate-product-manifest.mjs",
+    "predev": "node scripts/generate-product-manifest.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/generate-product-manifest.mjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -18,7 +21,8 @@
     "lucide-react": "^1.8.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.1"
+    "react-router-dom": "^7.14.1",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

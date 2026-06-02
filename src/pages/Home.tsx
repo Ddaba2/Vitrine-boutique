@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Monitor, Printer, Headphones, Smartphone, Phone, MessageCircle, Star, Shield, Truck } from 'lucide-react'
+import { filterProductsWithLocalImages } from '../lib/productImages'
 import { supabase, type Product } from '../lib/supabase'
 import ProductCard from '../components/ProductCard'
 
@@ -31,7 +32,8 @@ export default function Home() {
       .eq('popular', true)
       .limit(4)
       .then(({ data }) => {
-        setPopularProducts(data || [])
+        const withImages = filterProductsWithLocalImages(data || [])
+        setPopularProducts(withImages.slice(0, 4))
         setLoading(false)
       })
   }, [])

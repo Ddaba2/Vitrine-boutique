@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { filterProductsWithLocalImages } from '../lib/productImages'
 import { supabase, type Product, type Category } from '../lib/supabase'
 import ProductCard from '../components/ProductCard'
 
@@ -39,7 +40,7 @@ export default function Catalogue() {
     }
 
     const { data } = await query
-    setProducts(data || [])
+    setProducts(filterProductsWithLocalImages(data || []))
     setLoading(false)
   }, [categoryParam, brandParam, maxPriceParam, categories])
 
